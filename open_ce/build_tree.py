@@ -383,9 +383,13 @@ class BuildTree(): #pylint: disable=too-many-instance-attributes
         """
         Write a conda environment file for each variant.
         """
+        channels = []
+        for build_command in traverse_build_commands(self._tree, self._initial_nodes):
+            channels += build_command.channels
+        channels = list(set(channels))
         conda_env_files = dict()
         for variant, conda_env_file in self._conda_env_files.items():
-            conda_env_files[variant] = conda_env_file.write_conda_env_file(variant, self._channels,
+            conda_env_files[variant] = conda_env_file.write_conda_env_file(variant, self._channels + channels,
                                                                    output_folder, env_file_prefix, path)
 
         return conda_env_files
