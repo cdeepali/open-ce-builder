@@ -366,8 +366,11 @@ class BuildTree(): #pylint: disable=too-many-instance-attributes
                         continue
                     seen.add(package_name)
                     # Pass in channels ordered by priority.
-                    package_info = conda_utils.get_latest_package_info(channels,
-                                                                       package)
+                    package_info=""
+
+                    if "package_has_been_revoked"!=package:
+                       package_info = conda_utils.get_latest_package_info(channels, package)
+
                     # package_info is empty for a virtual package.
                     # As of now, this is just one case of package_info being empty.
                     if package_info == "":
